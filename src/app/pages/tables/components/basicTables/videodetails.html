@@ -1,0 +1,113 @@
+<style>
+div.BlackWrapper *
+{
+    color: black;
+}
+</style>
+
+<ba-card *ngIf="selectedvideo" title="Video Details" baCardClass="with-scroll table-panel">
+	<form>
+		<div class="form-group">
+			<label for="">Video ID</label>
+			<label type="email" class="form-control" id="" placeholder="">{{selectedvideo.id}}</label>
+		</div>
+		<div class="form-group">
+			<label for="">Video Name</label>
+			<label type="email" class="form-control" id="" placeholder="">{{selectedvideo.videoName}}</label>
+		</div>
+		<div class="form-group">
+			<label for="">Length</label>
+			<label type="email" class="form-control" id="" placeholder="">1 minute, 41.1 seconds</label>
+		</div>
+		<div class="form-group">
+			<label for="">Date (UTC)</label>
+			<label type="email" class="form-control" id="" placeholder="">11-08-2016 1:41 PM</label>
+		</div>
+		<div class="form-group">
+			<label for="">Score</label>
+			<div class="input-group">
+				<label class="form-control with-danger-addon">Deafault Rule: {{selectedvideo.score}}</label>
+				<span class="input-group-btn">
+     			<button class="btn btn-danger" type="button">ReScore!</button>
+ 				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="">Status</label>
+			<label type="email" class="form-control" id="" placeholder="">{{selectedvideo.state.stateName}}</label>
+		</div>
+		<div class="form-group" *ngIf="selectedvideo.requestcomment != '' ">
+			<label for="">Requester Notes</label>
+			<label type="email" class="form-control" id="" placeholder="">{{selectedvideo.requestcomment}}</label>
+		</div>
+
+		<div class="form-group">
+
+			<button type="button" *ngIf="selectedvideo.state.stateID == 2" (click)="showOrderInDepthAnalysisDialog()" class="btn btn-success align-center">Order In-Depth Analysis</button>
+			<button type="button" *ngIf="selectedvideo.state.stateID == 3" (click)="showQAReviewDialog()" class="btn btn-success align-center">Submit Review</button>
+			<button type="button" *ngIf="selectedvideo.videoMetaData != '' " (click)="showDialog()" class="btn btn-success align-center">Show Video Metadata</button>
+		</div>
+	</form>
+</ba-card>
+
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="BlackWrapper modal-header">
+				<button class="close" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+				<div class="BlackWrapper">Video Transcript</div>
+			</div>
+			<div class="modal-body section-block BlackWrapper">
+				<p>{{videometadata}}</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary confirm-btn" (click)="lgModal.hide()">Dismiss</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div bsModal #analysisModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="BlackWrapper modal-header">
+				<button class="close" (click)="analysisModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+				<div class="BlackWrapper">Edit In-Depth Analysis Request Notes</div>
+			</div>
+			<div class="modal-body section-block BlackWrapper">
+					<textarea [(ngModel)]="requestComment" rows="4" cols="35"></textarea>
+			</div>
+			<div class="modal-footer"  >
+				<button class="btn btn-primary confirm-btn" (click)="OrderInDepthAnalysis()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div bsModal #qareviewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="BlackWrapper modal-header">
+				<button class="close" (click)="qareviewModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+				<div class="BlackWrapper">QA Review Notes</div>
+			</div>
+			<div class="modal-body section-block BlackWrapper">
+				    <div class="BlackWrapper">QA Comment</div>
+					<textarea [(ngModel)]="qareviewComment" rows="4" cols="35"></textarea>
+					<div class="BlackWrapper">Need Attention</div>
+					 <input type="checkbox"  [(ngModel)]="videoneedAttention"/> 
+					<!--<ba-checkbox [(ngModel)]="videoneedAttention">Need Attention</ba-checkbox>-->
+			</div>
+			<div class="modal-footer"  >
+				<button class="btn btn-primary confirm-btn" (click)="reviewVideo()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>

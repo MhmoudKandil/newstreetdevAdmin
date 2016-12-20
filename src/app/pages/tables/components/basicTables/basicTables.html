@@ -1,0 +1,219 @@
+<style>
+div.BlackWrapper *
+{
+    color: black;
+}
+</style>
+
+<div class="widgets">
+
+
+  <div class="row">
+  <div class="button-wrapper col-lg-12 col-md-12">
+  
+    <ba-card title="Actions" baCardClass="with-scroll table-panel">
+
+			<button type="button" (click)="calculateScoreforSelectedEntries()" class="btn btn-success align-center">ReScore</button>
+			<button type="button" (click)="calculateScoreforSelectedEntries()" class="btn btn-success">ADV. Service</button>
+			<button type="button" (click)="analyzeVideoforSelectedEntries()" class="btn btn-success">Analyze</button>
+	</ba-card>
+	</div>
+    <div class="col-lg-12 col-md-12">
+      <ba-card title="Staged Videos" baCardClass="with-scroll table-panel">
+<!--         <hover-table></hover-table> -->
+ 
+       <div class="horizontal-scroll">
+	    <table class="table table-hover"> 
+	     <thead>
+			<tr class="black-muted-bg">
+				<th></th>
+				<th>Case Name</th>
+				<th>State</th>
+				<th>location</th>
+				<th>Notes</th>
+				<th>Score</th>
+			</tr>
+		 </thead>
+         <tbody>
+
+	
+	<tr class="top-border" *ngFor="let item of videolist" class="no-top-border">
+	<td>
+	<div>
+	<ba-checkbox [(ngModel)]="item.selected"></ba-checkbox>
+	</div>
+	</td>
+<td class="align-left" title="{{item.videoName}}" title="item.videoName" ><a href="/#/pages/dashboards/videodetails/{{item.id}}" >{{truncate(item.videoName)}}</a></td>
+	<td class="align-left" >{{item.state.stateName}}</td>
+	<td class="align-left">{{item.source}}</td>
+	
+	
+	<td class="align-left"  >
+	
+<div *ngIf='item.videoMetaData != "" ' (click)="showDialog(item.videoMetaData)" ><u>{{truncate(item.videoMetaData)}}</u></div>
+	<div *ngIf='item.videoMetaData == "" '></div>
+	
+	
+	</td>
+	
+	<td class="align-left">
+	
+
+	<button *ngIf="item.score < 50" type="button" class="btn btn-success">
+	{{item.score}}%
+	</button>
+	
+	<button *ngIf="item.score >= 50 && item.score < 70 " type="button" class="btn btn-warning">
+	{{item.score}}%
+	</button>
+	
+	<button *ngIf="item.score >= 70" type="button" class="btn btn-danger">
+	{{item.score}}% 
+	</button>
+	
+	
+	</td>
+	<td>
+		<div class="row show-grid">
+        
+		<!-- <div class="button-wrapper col-md-4">
+			<div *ngIf='item.videoMetaData != "" ' class="button-wrapper">
+			<button type="button" (click)="showDialog(item.videoMetaData)" class="btn btn-primary btn-raised">Show Notes</button>
+		    </div>
+			<div *ngIf='item.videoMetaData == "" ' class="button-wrapper">
+			<button type="button" class="btn btn-warning btn-raised"></button>
+			</div>
+		</div> -->
+		
+	    <!-- <div class="button-wrapper col-md-4">
+			<button type="button" (click)="calculateScore(item)" class="btn btn-success btn-raised">Re-Score</button>
+		</div> -->
+		
+		<!-- <div class="button-wrapper col-md-4">
+			<button type="button" (click)="calculateScore(item)" class="btn btn-success btn-raised">Analyze</button>
+		</div>
+		 -->
+		<!-- <div class="button-wrapper col-md-4">
+			<button type="button" (click)="calculateScore(item)" class="btn btn-success btn-raised">ADV. Services</button>
+		</div> -->
+		
+		</div>
+
+	</td>
+	</tr>
+	
+	
+		
+		
+		 
+<!-- 	<tr class="top-border">
+	<td class="align-right" >Police Harassment</td>
+	<td>
+		<div class="button-wrapper">
+			<button type="button" (click)="lgModal.show()" class="btn btn-primary btn-raised">Show Notes</button>
+		</div>
+	</td>
+	<td></td>
+	</tr>
+	
+	<tr class="top-border">
+	<td class="align-right">ollapalooza Artist Allegedly Jumped By Security After Performing</td>
+	<td>
+		<div class="button-wrapper">
+			<button type="button" class="btn btn-primary btn-raised">Show Notes</button>
+		</div>
+	</td>
+	<td></td>
+	</tr> -->
+   <!-- <tr *ngFor="let item of metricsTableData" class="no-top-border">
+      <td><img src="{{ ( item.image | baAppPicture ) }}" width="20" height="20"></td>
+      <td ngClass="nowrap">{{item.browser}}</td>
+      <td class="align-right">{{item.visits}}</td>
+      <td class="table-arr"><i [ngClass]="{'icon-up': item.isVisitsUp, 'icon-down': !item.isVisitsUp }"></i></td>
+      <td class="align-right">{{item.purchases}}</td>
+      <td class="table-arr"><i [ngClass]="{'icon-up': item.isPurchasesUp, 'icon-down': !item.isPurchasesUp }"></i></td>
+      <td class="align-right">{{item.percent}}</td>
+      <td class="table-arr"><i [ngClass]="{'icon-up': item.isPercentUp, 'icon-down': !item.isPercentUp }"></i></td>
+    </tr> -->
+	
+    </tbody>
+        </table>
+	   </div>
+      </ba-card>
+    </div>
+    <!-- <div class="col-lg-6 col-md-12">
+      <ba-card title="Bordered Table" baCardClass="with-scroll table-panel">
+        <bordered-table></bordered-table>
+      </ba-card>
+    </div> -->
+  </div>
+ <!--  <div class="row">
+    <div class="col-lg-6 col-md-12">
+      <ba-card title="Condensed Table" baCardClass="with-scroll table-panel">
+        <condensed-table></condensed-table>
+      </ba-card>
+    </div>
+    <div class="col-lg-6 col-md-12">
+      <ba-card title="Striped Rows" baCardClass="with-scroll table-panel">
+        <striped-table></striped-table>
+      </ba-card>
+    </div>
+  </div> -->
+  <!-- <div class="row">
+    <div class="col-lg-6 col-md-12">
+      <ba-card title="Contextual Table" baCardClass="with-scroll table-panel">
+        <contextual-table></contextual-table>
+      </ba-card>
+    </div>
+    <div class="col-lg-6 col-md-12">
+      <ba-card title="Responsive Table" baCardClass="with-scroll table-panel">
+        <responsive-table></responsive-table>
+      </ba-card>
+    </div>
+  </div> -->
+
+</div>
+<!--<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+			</button>
+        <h4 class="modal-title">Video Transcript</h4>
+      </div>
+	  
+	   <div class="modal-body more-text-widget">
+       <ba-card title="Text Color" baCardClass="more-text-widget color-widget">
+        <div class="more-text-widget section-block red-text">
+          <p>{{videometadata}}</p>
+        </div>
+       </ba-card>
+	   </div>
+	   
+      <div class="modal-footer">
+        <button class="btn btn-primary confirm-btn" (click)="lgModal.hide()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+</div>-->
+ 
+ 
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="BlackWrapper modal-header">
+				<button class="close" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+				<div class="BlackWrapper">Video Transcript</div>
+			</div>
+			<div class="modal-body section-block BlackWrapper">
+				<p>{{videometadata}}</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary confirm-btn" (click)="lgModal.hide()">Dismiss</button>
+			</div>
+		</div>
+	</div>
+</div>
